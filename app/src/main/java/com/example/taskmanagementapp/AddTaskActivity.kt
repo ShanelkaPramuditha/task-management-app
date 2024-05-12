@@ -1,20 +1,28 @@
 package com.example.taskmanagementapp
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.taskmanagementapp.databinding.ActivityAddTaskBinding
 
 class AddTaskActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAddTaskBinding
+    private lateinit var db: TaskDBHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_add_task)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding = ActivityAddTaskBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        db = TaskDBHelper(this)
+
+        binding.saveButton.setOnClickListener {
+            val title = binding.taskName.text.toString()
+            val content = binding.taskDescription.text.toString()
+            val task = Task(0, title, content)
+            db.insertTask(task)
+            finish()
+            Toast.makeText(this, "Task saved", Toast.LENGTH_SHORT).show()
         }
     }
 }
