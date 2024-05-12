@@ -48,6 +48,15 @@
         android:fontFamily="@font/ubuntu_light"
         tools:ignore="HardcodedText,VisualLintTextFieldSize" />
 
+    <Button
+        android:id="@+id/updateDateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/updateTaskName"
+        android:text="Select Due Date and Time"
+        android:layout_marginTop="12dp"
+        tools:ignore="HardcodedText" />
+
     <EditText
         android:id="@+id/updateTaskDescription"
         android:layout_width="match_parent"
@@ -59,7 +68,7 @@
         android:padding="12dp"
         android:textSize="18sp"
         android:background="@drawable/blue_border"
-        android:layout_below="@id/updateTaskName"
+        android:layout_below="@id/updateDateButton"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/ubuntu_light"
         tools:ignore="HardcodedText,VisualLintTextFieldSize" />

@@ -25,14 +25,24 @@ class UpdateActivity : AppCompatActivity() {
         val task = db.getTaskById(taskId)
         binding.updateTaskName.setText(task.title)
         binding.updateTaskDescription.setText(task.content)
+        binding.updateDateButton.text = task.due
 
         binding.updateButton.setOnClickListener {
             val newTitle = binding.updateTaskName.text.toString()
             val newContent = binding.updateTaskDescription.text.toString()
-            val updatedTask = Task(taskId, newTitle, newContent)
+            val newDue = binding.updateDateButton.text.toString()
+            val updatedTask = Task(taskId, newTitle, newContent, newDue, task.status)
             db.updateTask(updatedTask)
             finish()
             Toast.makeText(this, "Updated!", Toast.LENGTH_SHORT).show()
         }
+
+        /*binding.taskCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            val status = if (isChecked) "Complete" else "Incomplete"
+            val updatedTask = Task(taskId, task.title, task.content, status)
+            db.updateTask(updatedTask)
+            Toast.makeText(this, "Updated!", Toast.LENGTH_SHORT).show()
+        }*/
+
     }
 }

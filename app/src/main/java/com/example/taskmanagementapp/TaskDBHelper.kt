@@ -13,10 +13,12 @@ class TaskDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         private const val COLUMN_ID = "id"
         private const val COLUMN_TITLE = "title"
         private const val COLUMN_CONTENT = "content"
+        private const val COLUMN_DUE = "due"
+        private const val COLUMN_STATUS = "status"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val createTableQuery = "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_TITLE TEXT, $COLUMN_CONTENT TEXT)"
+        val createTableQuery = "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_TITLE TEXT, $COLUMN_CONTENT TEXT, $COLUMN_DUE TEXT,$COLUMN_STATUS TEXT DEFAULT 'Incomplete')"
         db?.execSQL(createTableQuery)
     }
 
@@ -31,6 +33,7 @@ class TaskDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         val values = ContentValues().apply {
             put(COLUMN_TITLE, task.title)
             put(COLUMN_CONTENT, task.content)
+            put(COLUMN_DUE, task.due)
         }
         db.insert(TABLE_NAME, null, values)
         db.close()
@@ -46,7 +49,9 @@ class TaskDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
                 val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
                 val title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE))
                 val content = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTENT))
-                tasks.add(Task(id, title, content))
+                val due = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DUE))
+                val status = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_STATUS))
+                tasks.add(Task(id, title, content, due, status))
             } while (cursor.moveToNext())
         }
         cursor.close()
@@ -75,10 +80,24 @@ class TaskDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
         val title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE))
         val content = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTENT))
+        val due = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DUE))
+        val status = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_STATUS))
 
         cursor.close()
         db.close()
-        return Task(id, title, content)
+        return Task(id, title, content, due, status)
+    }
+
+    // Update status with check box
+    fun updateStatus(taskId: Int, status: String) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_STATUS, status)
+        }
+        val whereClause = "$COLUMN_ID = ?"
+        val whereArgs = arrayOf(taskId.toString())
+        db.update(TABLE_NAME, values, whereClause, whereArgs)
+        db.close()
     }
 
     fun deleteTask(taskId: Int) {

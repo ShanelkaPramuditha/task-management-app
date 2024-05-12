@@ -7,6 +7,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -20,6 +21,8 @@ class TasksAdapter(private var tasks: List<Task>, context: Context) : RecyclerVi
         val contentTextView: TextView = itemView.findViewById(R.id.taskDescription)
         val updateButton: ImageView = itemView.findViewById(R.id.updateTask)
         val deleteButton: ImageView = itemView.findViewById(R.id.deleteTask)
+        val dueDate: TextView = itemView.findViewById(R.id.dueDate)
+        val checkBox: CheckBox = itemView.findViewById(R.id.taskCheckbox)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -29,10 +32,12 @@ class TasksAdapter(private var tasks: List<Task>, context: Context) : RecyclerVi
 
     override fun getItemCount(): Int = tasks.size
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val task = tasks[position]
         holder.titleTextView.text = task.title
         holder.contentTextView.text = task.content
+        holder.dueDate.text = "End: " + task.due
 
         holder.updateButton.setOnClickListener {
             AlertDialog.Builder(holder.itemView.context)
@@ -47,6 +52,8 @@ class TasksAdapter(private var tasks: List<Task>, context: Context) : RecyclerVi
                 .setNegativeButton("No", null)
                 .show()
         }
+
+        //holder.checkBox.isChecked = task.status == "Complete"
 
         holder.deleteButton.setOnClickListener {
             AlertDialog.Builder(holder.itemView.context)
