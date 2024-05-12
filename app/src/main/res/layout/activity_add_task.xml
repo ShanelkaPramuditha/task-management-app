@@ -18,7 +18,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="6dp"
         android:background="#FFFFFF"
-        android:src="@drawable/done"
+        android:src="@drawable/save"
         tools:ignore="ContentDescription" />
 
     <TextView

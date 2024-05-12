@@ -40,6 +40,14 @@
                 android:src="@drawable/edit"
                 tools:ignore="ContentDescription" />
 
+            <ImageView
+                android:id="@+id/deleteTask"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/delete"
+                tools:ignore="ContentDescription" />
+
         </RelativeLayout>
 
         <TextView
