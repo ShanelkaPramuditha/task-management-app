@@ -31,6 +31,15 @@
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
 
+            <ImageView
+                android:id="@+id/updateTask"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="30dp"
+                android:src="@drawable/edit"
+                tools:ignore="ContentDescription" />
+
         </RelativeLayout>
 
         <TextView
